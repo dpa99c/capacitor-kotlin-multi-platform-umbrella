@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KMP Umbrella – Example</title>
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>KMP Umbrella <span class="accent">demo</span></h1>
+        <p class="muted">
+          Two Capacitor plugins – <code>KmpDevice</code> and <code>KmpMotion</code> – from one package and
+          <strong>one Kotlin framework</strong> (umbrella approach on top of <code>capacitor-kotlin-multi-platform</code>).
+          Platform APIs are accessed with Kotlin <code>expect</code>/<code>actual</code>; normalisation, step counting and
+          shake detection are shared Kotlin running on <strong id="platform">…</strong>.
+        </p>
+      </header>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>KmpDevice.getDeviceInfo()</h2>
+          <button id="deviceButton" class="secondary">Refresh</button>
+        </div>
+        <p id="deviceSummary" class="summary muted">Loading…</p>
+        <dl id="device" class="kv"></dl>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>KmpMotion</h2>
+          <span id="availability" class="badge">…</span>
+        </div>
+        <div class="controls">
+          <div class="segmented" role="group" aria-label="Motion source">
+            <button id="sourceDevice" aria-pressed="false">Device</button>
+            <button id="sourceSimulated" aria-pressed="false">Simulated</button>
+          </div>
+          <span class="spacer"></span>
+          <button id="permissionButton" class="secondary" hidden>Allow motion</button>
+          <button id="startButton">Start</button>
+        </div>
+        <div class="stats">
+          <div class="stat" id="stepsStat"><div class="value" id="steps">0</div><div class="label">steps</div></div>
+          <div class="stat"><div class="value" id="cadence">–</div><div class="label">steps / min</div></div>
+          <div class="stat" id="shakesStat"><div class="value" id="shakes">0</div><div class="label">shakes</div></div>
+          <div class="stat"><div class="value" id="tilt">–</div><div class="label">pitch / roll °</div></div>
+        </div>
+        <div class="axes"><span id="ax">x –</span><span id="ay">y –</span><span id="az">z –</span></div>
+        <canvas id="chart" width="680" height="240" aria-label="Acceleration chart"></canvas>
+        <div class="legend">
+          <span><i style="background: #e5484d"></i>x</span>
+          <span><i style="background: #30a46c"></i>y</span>
+          <span><i style="background: #0090ff"></i>z</span>
+          <span><i style="background: var(--accent)"></i>|linear|</span>
+        </div>
+        <p id="motionStatus" class="muted">Stopped</p>
+      </section>
+    </main>
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>

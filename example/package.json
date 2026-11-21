@@ -1,0 +1,28 @@
+{
+  "name": "capacitor-kotlin-multi-platform-umbrella-example",
+  "version": "1.0.0",
+  "description": "Example app for capacitor-kotlin-multi-platform-umbrella",
+  "type": "module",
+  "keywords": [
+    "capacitor",
+    "mobile"
+  ],
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "capacitor-kotlin-multi-platform-umbrella": "file:.."
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "vite": "^7.3.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "private": true
+}

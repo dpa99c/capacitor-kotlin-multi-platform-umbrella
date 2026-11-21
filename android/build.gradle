@@ -1,0 +1,92 @@
+ext {
+    junitVersion = project.hasProperty('junitVersion') ? rootProject.ext.junitVersion : '4.13.2'
+    androidxAppCompatVersion = project.hasProperty('androidxAppCompatVersion') ? rootProject.ext.androidxAppCompatVersion : '1.7.1'
+    androidxJunitVersion = project.hasProperty('androidxJunitVersion') ? rootProject.ext.androidxJunitVersion : '1.3.0'
+    androidxEspressoCoreVersion = project.hasProperty('androidxEspressoCoreVersion') ? rootProject.ext.androidxEspressoCoreVersion : '3.7.0'
+    androidxCoreKTXVersion = project.hasProperty('androidxCoreKTXVersion') ? rootProject.ext.androidxCoreKTXVersion : '1.17.0'
+}
+
+buildscript {
+    ext.kotlin_version = project.hasProperty("kotlin_version") ? rootProject.ext.kotlin_version : '2.2.20'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.13.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace = "io.github.capacitorkmp.umbrella"
+    compileSdk = project.hasProperty('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 36
+    defaultConfig {
+        minSdkVersion project.hasProperty('minSdkVersion') ? rootProject.ext.minSdkVersion : 24
+        targetSdkVersion project.hasProperty('targetSdkVersion') ? rootProject.ext.targetSdkVersion : 36
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError = false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+// ---------------------------------------------------------------------------------------------
+// Kotlin Multiplatform artifacts (umbrella)
+//
+// `npm run kmp:build` publishes the umbrella and its feature modules to the local Maven repository
+// `kmp-repo/` shipped in this npm package, together with a copy of the base `core` library. Register it
+// for every project of the host build so the app resolves everything without manual changes – and
+// without installing the base plugin (which would add a second Kotlin runtime on iOS).
+// ---------------------------------------------------------------------------------------------
+def umbrellaKmpRepo = file("../kmp-repo")
+rootProject.allprojects { p ->
+    p.repositories {
+        maven {
+            name = "kmpUmbrella"
+            url = umbrellaKmpRepo
+            content {
+                includeGroup "io.github.capacitorkmp"            // core (copied from the base plugin)
+                includeGroup "io.github.capacitorkmp.umbrella"   // umbrella + feature modules
+            }
+        }
+    }
+}
+def umbrellaKmpVersion = new groovy.json.JsonSlurper().parse(file("../package.json")).version
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':capacitor-android')
+    // core + device + motion (one AAR per module, resolved transitively from kmp-repo)
+    implementation "io.github.capacitorkmp.umbrella:umbrella-android:$umbrellaKmpVersion"
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.core:core-ktx:$androidxCoreKTXVersion"
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+}

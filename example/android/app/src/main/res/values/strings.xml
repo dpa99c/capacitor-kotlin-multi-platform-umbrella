@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KMP Umbrella</string>
+    <string name="title_activity_main">KMP Umbrella</string>
+    <string name="package_name">io.github.capacitorkmp.umbrella.example</string>
+    <string name="custom_url_scheme">io.github.capacitorkmp.umbrella.example</string>
+</resources>
