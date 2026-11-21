@@ -22,10 +22,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/example/capacitor-kotlin-multi-platform-umbrella.git"
+    "url": "git+https://github.com/dpa99c/capacitor-kotlin-multi-platform-umbrella.git"
   },
   "bugs": {
-    "url": "https://github.com/example/capacitor-kotlin-multi-platform-umbrella/issues"
+    "url": "https://github.com/dpa99c/capacitor-kotlin-multi-platform-umbrella/issues"
   },
   "keywords": [
     "capacitor",
